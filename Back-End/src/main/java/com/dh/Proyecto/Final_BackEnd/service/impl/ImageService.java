@@ -64,10 +64,8 @@ public class ImageService implements IImageService {
         return UUID.randomUUID().toString() + "_" + sanitizedFileName;
     }
 
-
-
     @Override
-    public Image saveImage(MultipartFile file, ImageDto imageDto, Room room) throws IOException {
+    public Image saveImage(MultipartFile file, Room room) throws IOException {
 
         //Ejecutar validaciones de la imagen
         validateImageFile(file);
@@ -88,7 +86,8 @@ public class ImageService implements IImageService {
         }
 
         //Crear y guardar la entidad Image
-        Image image = new Image(imageDto.getName(), imageDto.getDescription(), destinationFile.toString(), room);
+        Image image = new Image(file.getName(), "Description img", destinationFile.toString(), room);
+        System.out.println(image.toString());
         imageRepository.save(image);//Guardar imagen en la BD
 
         return image;

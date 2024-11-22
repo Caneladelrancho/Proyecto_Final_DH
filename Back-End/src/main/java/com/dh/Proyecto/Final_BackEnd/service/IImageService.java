@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IImageService {
-    Image saveImage(MultipartFile file, ImageDto imageDto, Room room) throws IOException; //Guardar Imagen
+    Image saveImage(MultipartFile file, Room room) throws IOException; //Guardar Imagen
     List<Image> findAllImaged();
     void delete (Long id);
 }

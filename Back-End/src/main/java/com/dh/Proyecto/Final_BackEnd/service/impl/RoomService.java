@@ -34,48 +34,48 @@ public class RoomService implements IRoomService {
     @Override
     public RoomDto saveRoom(RoomDto roomDto) throws IOException {
 
-        //Crear una entidad room y desde RoomDto se asignan los valores, pero sin las imágenes
-        Room room = new Room();
-        room.setRoomNumber(roomDto.getRoomNumber());
-        room.setCost(roomDto.getCost());
-        room.setAvailability(roomDto.getAvailability());
+        try {
+            //Crear una entidad room y desde RoomDto se asignan los valores, pero sin las imágenes
+            Room room = new Room();
+            room.setRoomNumber(roomDto.getRoomNumber());
+            room.setCost(roomDto.getCost());
+            room.setAvailability(roomDto.getAvailability());
 
-        //Manejar varias imágenes si están presentes
-        List<Image> images = new ArrayList<>();
+            Room roomSaved = roomRepository.save(room); //Guardar Room en la BD
 
-        if (roomDto.getImages() != null && !roomDto.getImages().isEmpty()) {
-            for (ImageDto imageDto : roomDto.getImages()) {
-                for (MultipartFile file : imageDto.getImages()) {
+            //Manejar varias imágenes si están presentes
+            List<Image> images = new ArrayList<>();
 
-                    Image imageToSaveRoom = imageService.saveImage(file, imageDto, room);
+            if (roomDto.getImages() != null && !roomDto.getImages().isEmpty()) {
+                for (MultipartFile image : roomDto.getImages()) {
+
+                    Image imageToSaveRoom = imageService.saveImage(image, roomSaved);
                     images.add(imageToSaveRoom);
                 }
             }
+
+            //Generar una instancia de RoomDTO
+            RoomDto roomDtoToReturn = new RoomDto();
+            roomDtoToReturn.setRoomNumber(room.getRoomNumber());
+            roomDtoToReturn.setCost(room.getCost());
+            roomDtoToReturn.setAvailability(room.getAvailability());
+
+            //Convertir la lista de imágenes de Room a una lista de ImageDto
+            List<String> imageUrlList = new ArrayList<>();
+            for (Image image : images) {
+                imageUrlList.add(image.getImageUrl());
+            }
+
+            //Manejar un imagedto que tenga la url de la imagen
+            roomDtoToReturn.setImagesUrl(imageUrlList);//Asignar la lista de ImageDto a RoomDto
+            System.out.println(roomDtoToReturn);
+            return roomDtoToReturn;
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
 
-        room.setImages(images);//Asignar todas las imágenes al room
-        roomRepository.save(room);//Guardar Room en la BD
-
-        //Generar una instancia de RoomDTO
-        RoomDto roomDtoToReturn = new RoomDto();
-        roomDtoToReturn.setRoomNumber(room.getRoomNumber());
-        roomDtoToReturn.setCost(room.getCost());
-        roomDtoToReturn.setAvailability(room.getAvailability());
-
-        //Convertir la lista de imágenes de Room a una lista de ImageDto
-        List<ImageDto> imageDtoList = new ArrayList<>();
-        for (Image image : room.getImages()) {
-            ImageDto imageDto = new ImageDto();
-            imageDto.setName(image.getName());
-            imageDto.setDescription(imageDto.getDescription());
-            imageDto.setImageUrl(image.getImageUrl());
-            imageDtoList.add(imageDto);
-
-        }
-        //manejar un imagedto que tenga la url de la imagen
-
-        roomDtoToReturn.setImages(imageDtoList);//Asignar la lista de ImageDto a RoomDto
-        return roomDtoToReturn;
     }
 
     @Override

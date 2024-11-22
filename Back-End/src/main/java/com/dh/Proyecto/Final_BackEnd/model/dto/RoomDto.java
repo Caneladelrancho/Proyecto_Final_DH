@@ -1,5 +1,7 @@
 package com.dh.Proyecto.Final_BackEnd.model.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 public class RoomDto {
@@ -7,16 +9,18 @@ public class RoomDto {
     private String roomNumber;
     private Double cost;
     private Boolean availability;
-    private List<ImageDto> images;
+    private List<MultipartFile> images;
+    private List<String> imagesUrl;
 
     public RoomDto() {
     }
 
-    public RoomDto(String roomNumber, Double cost, Boolean availability, List<ImageDto> images) {
+    public RoomDto(String roomNumber, Double cost, Boolean availability, List<MultipartFile> images, List<String> imagesUrl) {
         this.roomNumber = roomNumber;
         this.cost = cost;
         this.availability = availability;
         this.images = images;
+        this.imagesUrl = imagesUrl;
     }
 
     public String getRoomNumber() {
@@ -43,12 +47,20 @@ public class RoomDto {
         this.availability = availability;
     }
 
-    public List<ImageDto> getImages() {
+    public List<MultipartFile> getImages() {
         return images;
     }
 
-    public void setImages(List<ImageDto> images) {
+    public void setImages(List<MultipartFile> images) {
         this.images = images;
+    }
+
+    public List<String> getImagesUrl() {
+        return imagesUrl;
+    }
+
+    public void setImagesUrl(List<String> imagesUrl) {
+        this.imagesUrl = imagesUrl;
     }
 
     @Override
