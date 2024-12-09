@@ -9,6 +9,6 @@ import java.util.List;
 public interface IRoomService {
 
     RoomDto saveRoom(RoomDto roomDto) throws IOException; //Agregar producto o habitacion
-    List<Room> findAllRooms(); //Listar todos los productos que ya esten registrados
+    List<RoomDto> findAllRooms() throws Exception;//Listar todos los productos que ya esten registrados
     void delete(Long id);//Eliminar los productos
 }

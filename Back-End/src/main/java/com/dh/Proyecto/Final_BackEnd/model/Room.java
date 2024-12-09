@@ -25,11 +25,10 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Reservation> reservations;
 
-
     public Room() {
     }
 
-    public Room(Long id, String roomNumber, Double cost, Boolean availability, List<Image> images, Hotel hotel, List<Reservation> reservations) {
+    /*public Room(Long id, String roomNumber, Double cost, Boolean availability, List<Image> images, Hotel hotel, List<Reservation> reservations) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.cost = cost;
@@ -46,10 +45,7 @@ public class Room {
         this.images = images;
         this.hotel = hotel;
         this.reservations = reservations;
-    }
-
-    public Room(String roomNumber, Double cost, Boolean availability) {
-    }
+    }*/
 
     public Long getId() {
         return id;

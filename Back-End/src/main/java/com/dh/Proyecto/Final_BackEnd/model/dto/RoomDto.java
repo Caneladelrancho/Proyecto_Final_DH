@@ -23,6 +23,12 @@ public class RoomDto {
         this.imagesUrl = imagesUrl;
     }
 
+    public RoomDto(String roomNumber, Double cost, Boolean availability) {
+        this.roomNumber = roomNumber;
+        this.cost = cost;
+        this.availability = availability;
+    }
+
     public String getRoomNumber() {
         return roomNumber;
     }

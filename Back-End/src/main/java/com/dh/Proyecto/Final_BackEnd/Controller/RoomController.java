@@ -1,16 +1,11 @@
 package com.dh.Proyecto.Final_BackEnd.Controller;
 
-import com.dh.Proyecto.Final_BackEnd.model.Room;
-import com.dh.Proyecto.Final_BackEnd.model.dto.ImageDto;
 import com.dh.Proyecto.Final_BackEnd.model.dto.RoomDto;
 import com.dh.Proyecto.Final_BackEnd.service.IRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,6 +20,7 @@ public class RoomController {
         this.iRoomService = iRoomService;
     }
 
+
    //Guardar una habitación
     @PostMapping("/add")
     public ResponseEntity<RoomDto> save(@ModelAttribute RoomDto roomDto){
@@ -35,6 +31,15 @@ public class RoomController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<?> findAllRooms() throws Exception {
+        try {
+            List<RoomDto> rooms = iRoomService.findAllRooms();
+            return ResponseEntity.ok(rooms);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 }
 

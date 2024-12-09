@@ -2,7 +2,6 @@ package com.dh.Proyecto.Final_BackEnd.service.impl;
 
 import com.dh.Proyecto.Final_BackEnd.model.Image;
 import com.dh.Proyecto.Final_BackEnd.model.Room;
-import com.dh.Proyecto.Final_BackEnd.model.dto.ImageDto;
 import com.dh.Proyecto.Final_BackEnd.repository.IImageRepository;
 import com.dh.Proyecto.Final_BackEnd.service.IImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ImageService implements IImageService {
@@ -94,8 +94,19 @@ public class ImageService implements IImageService {
     }
 
     @Override
-    public List<Image> findAllImaged() {
-        return null;
+    public List<String> findImageUrls(Room room) throws Exception {
+        try {
+            //Recuperar todas las imágenes de una habitación específica
+            List<Image> images = imageRepository.findByRoom(room);
+
+            //Convertir las imagenes a URLs
+            return images.stream()
+                    .map(Image::getImageUrl)
+                    .collect(Collectors.toList());
+
+        }catch (Exception e){
+            throw new Exception("Unable to retrieve images" + e.getMessage(), e);
+        }
     }
 
     @Override
@@ -103,13 +114,7 @@ public class ImageService implements IImageService {
 
     }
 
-    /*
 
-                    //Crear el objeto Image y asignarle los datos
-                    Image image = new Image();
-                    image.setName(imageDto.getName());
-                    image.setDescription(imageDto.getDescription());
-                    image.setImageUrl(destinationFile.toString());
-                    image.setRoom(room);//Asignar una room a cada image
-                    images.add(imageRepository.save(image));//Guardar una image y agregarla a la lista*/
+
+
 }
